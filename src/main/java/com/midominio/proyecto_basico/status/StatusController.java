@@ -19,7 +19,7 @@ public class StatusController {
 	    private ClientRepository clientRepository;
 
     @GetMapping("/status")
-    public ApiResponse checkStatus() {
+    public StatusDTO checkStatus() {
         StatusDTO status = new StatusDTO();
         try {
             clientRepository.findAll(); 
@@ -50,6 +50,6 @@ public class StatusController {
             status.setNetwork("failure");  
         }
 
-        return new ApiResponse(200, "success", status);
+        return status;
     }
 }

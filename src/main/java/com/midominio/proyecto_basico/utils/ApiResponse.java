@@ -1,9 +1,16 @@
 package com.midominio.proyecto_basico.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ApiResponse {
 	 private int status;
 	    private String message;
 	    private Object data;
+	    
+	    public ApiResponse(Object data) {
+	    	this.data = data;
+	    }
 
 
 	    public ApiResponse(int status, String message) {

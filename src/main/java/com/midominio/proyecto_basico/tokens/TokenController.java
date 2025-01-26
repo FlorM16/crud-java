@@ -23,7 +23,7 @@ public class TokenController {
     private ClientService clientService;
 
     @GetMapping("/token")
-    public ResponseEntity<ApiResponse> getToken(@RequestHeader String clientId, @RequestHeader String clientSecret) {
+    public ResponseEntity<?> getToken(@RequestHeader String clientId, @RequestHeader String clientSecret) {
         Optional<Client> clientOpt = clientService.findClientByIdAndSecret(clientId, clientSecret);
         if (clientOpt.isPresent()) {
         	
@@ -32,12 +32,12 @@ public class TokenController {
             if (existingTokenOpt.isPresent()) {
                 String token = existingTokenOpt.get().getToken();
                 TokenDTO tokenDTO = new TokenDTO(token);
-                return ResponseEntity.ok(new ApiResponse(200, "success", tokenDTO));
+                return ResponseEntity.ok(tokenDTO);
             } else {
-                return ResponseEntity.status(400).body(new ApiResponse(400, "Token not found for this clientId"));
+                return ResponseEntity.status(500).body(new ApiResponse(500, "Internal Error"));
             }
         }
-        return ResponseEntity.status(400).body(new ApiResponse(400, "Invalid clientId or clientSecret"));
+        return ResponseEntity.status(500).body(new ApiResponse(500, "Internal Error"));
     }
     
     @GetMapping("/introspect")
@@ -50,9 +50,9 @@ public class TokenController {
             TokenDTO tokenDTO = new TokenDTO(tokenEntity.getToken()); 
             String clientId = tokenEntity.getClientId(); 
             
-            return ResponseEntity.ok(new ApiResponse(200, "success", new TokenIntrospectResponse(clientId)));
+            return ResponseEntity.ok(new ApiResponse(200, "Success", clientId));
         }
         
-        return ResponseEntity.status(400).body(new ApiResponse(400, "error"));
+        return ResponseEntity.status(400).body(new ApiResponse(400, "Error"));
     }
     }

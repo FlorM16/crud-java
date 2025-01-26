@@ -28,7 +28,7 @@ public class ClientController {
 
         return new Object() {
             public int status = 200;
-            public String message = "success";
+            public String message = "Success";
         };
     }
 }
